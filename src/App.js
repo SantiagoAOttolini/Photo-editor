@@ -81,6 +81,16 @@ function App() {
   const [options, setOptions] = useState(DEFAULT_OPTIONS);
   const selectedOptions = options[selectedOptionsIndex];
 
+  function handleSliderChange({target}){
+setOptions(prevOptions=>{
+  return prevOptions.map((option, index)=>{
+    if (index !== selectedOptionsIndex) return option 
+      
+    return {...options, value: target.value}
+  })
+})
+  }
+
   return (
     <div className="container">
       <div className="mainImage" />
@@ -96,7 +106,13 @@ function App() {
           );
         })}
       </div>
-      <Slider />
+      <Slider 
+      min={selectedOptions.range.min}
+      max={selectedOptions.range.max}
+      value={selectedOptions.value}
+      handleChange={handleSliderChange}
+      
+      />
     </div>
   );
 }
