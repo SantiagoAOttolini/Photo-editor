@@ -1,8 +1,7 @@
-*,
-*::before,
-*::after {
+*, *::before, *::after {
   box-sizing: border-box;
 }
+
 body {
   margin: 0;
 }
@@ -10,11 +9,13 @@ body {
 .container {
   display: grid;
   grid-template-columns: 1fr auto;
-  grid-template-rows: 1rf auto;
-  grid-template-areas: "image sidebar" "slider sidebar";
+  grid-template-rows: 1fr auto;
+  grid-template-areas: 
+    "image sidebar"
+    "slider sidebar";
   height: 100vh;
-  width: 100vh;
-  background-color: #dadada;
+  width: 100vw;
+  background-color: #DADADA;
 }
 
 .mainImage {

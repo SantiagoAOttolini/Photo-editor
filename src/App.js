@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import "./App.css";
 import Slider from "./Slider";
-import SlidebarItem from "./SlidebarItem";
+import SidebarItem from "./SlidebarItem";
 
 const DEFAULT_OPTIONS = [
   {
     name: "Brightness",
-    porperty: "brightness",
+    property: "brightness",
     value: 100,
     range: {
       min: 0,
@@ -16,7 +16,7 @@ const DEFAULT_OPTIONS = [
   },
   {
     name: "Contrast",
-    porperty: "contrast",
+    property: "contrast",
     value: 100,
     range: {
       min: 0,
@@ -26,7 +26,7 @@ const DEFAULT_OPTIONS = [
   },
   {
     name: "Saturation",
-    porperty: "saturation",
+    property: "saturate",
     value: 100,
     range: {
       min: 0,
@@ -36,7 +36,7 @@ const DEFAULT_OPTIONS = [
   },
   {
     name: "Grayscale",
-    porperty: "grayscale",
+    property: "grayscale",
     value: 0,
     range: {
       min: 0,
@@ -46,7 +46,7 @@ const DEFAULT_OPTIONS = [
   },
   {
     name: "Sepia",
-    porperty: "sepia",
+    property: "sepia",
     value: 0,
     range: {
       min: 0,
@@ -56,7 +56,7 @@ const DEFAULT_OPTIONS = [
   },
   {
     name: "Hue Rotate",
-    porperty: "hue-rotate",
+    property: "hue-rotate",
     value: 0,
     range: {
       min: 0,
@@ -66,7 +66,7 @@ const DEFAULT_OPTIONS = [
   },
   {
     name: "Blur",
-    porperty: "blur",
+    property: "blur",
     value: 0,
     range: {
       min: 0,
@@ -77,41 +77,47 @@ const DEFAULT_OPTIONS = [
 ];
 
 function App() {
-  const [selectedOptionsIndex, setSelectedOptionsIndex] = useState(0);
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState(0);
   const [options, setOptions] = useState(DEFAULT_OPTIONS);
-  const selectedOptions = options[selectedOptionsIndex];
+  const selectedOptions = options[selectedOptionIndex];
 
-  function handleSliderChange({target}){
-setOptions(prevOptions=>{
-  return prevOptions.map((option, index)=>{
-    if (index !== selectedOptionsIndex) return option 
-      
-    return {...options, value: target.value}
-  })
-})
+  function handleSliderChange({ target }) {
+    setOptions((prevOptions) => {
+      return prevOptions.map((option, index) => {
+        if (index !== selectedOptionIndex) return option;
+        return { ...option, value: target.value };
+      });
+    });
+  }
+
+  function getImageStyle() {
+    const filters = options.map((option) => {
+      return `${option.property}(${option.value}${option.unit})`;
+    });
+
+    return { filter: filters.join(" ") };
   }
 
   return (
     <div className="container">
-      <div className="mainImage" />
+      <div className="mainImage" style={getImageStyle()} />
       <div className="sidebar">
         {options.map((option, index) => {
           return (
-            <SlidebarItem
+            <SidebarItem
               key={index}
               name={option.name}
-              active={index === selectedOptionsIndex}
-              handleClick={()=>setSelectedOptionsIndex(index)}
+              active={index === selectedOptionIndex}
+              handleClick={() => setSelectedOptionIndex(index)}
             />
-          );
+          )
         })}
       </div>
-      <Slider 
-      min={selectedOptions.range.min}
-      max={selectedOptions.range.max}
-      value={selectedOptions.value}
-      handleChange={handleSliderChange}
-      
+      <Slider
+        min={selectedOptions.range.min}
+        max={selectedOptions.range.max}
+        value={selectedOptions.value}
+        handleChange={handleSliderChange}
       />
     </div>
   );
